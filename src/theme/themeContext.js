@@ -10,7 +10,7 @@ export const getTheme = (mode) =>
             primary: { main: "#12B2C1", light: "#0c7c87", dark: "#41c1cd", contrastText: '#fff' },
             secondary: { main: "#E5F9F8", light: "#a0aead", dark: "#eafaf9" },
             background: {
-              default: "#f5f5f5",
+              default: "#F7FFFF",
               paper: "#E5F9F8",
             },
             text: {

@@ -13,130 +13,68 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Header from "../../components/header";
-import ThemeToggle from "../../components/btnThemeToogle";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { getTheme } from "../../theme/themeContext";
 import { useTheme } from "@mui/material";
-import PersonalVideoIcon from "@mui/icons-material/PersonalVideo";
-import circle from "../../assets/circle.svg";
-import SloganText from "./components/sloganText";
+import HeroSection from "./components/heroSection";
+import python from "../../assets/py.png";
+import figma from "../../assets/figma.png";
+import react from "../../assets/react.png";
+import Fontionnalite from "./components/fonctionnaliteSection";
+import Step from "./components/stepSection";
+import Footer from "../../components/footer";
 export default function Home() {
   const theme = useTheme();
-  const mdDown = useMediaQuery(theme.breakpoints.up("md"));
   return (
     <>
       <Header />
       <Toolbar />
       <Container
         maxWidth={false}
-        // disableGutters
+        disableGutters
         sx={{
-          width: "100vw",
-          height: "calc(100svh - 64px)",
-          pt: 5,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center", // Centre horizontalement
-          justifyContent: "space-between", // Centre verticalement (si hauteur > 100%)
-          backgroundColor: "background.paper",
+          backgroundColor: "background.default",
         }}
       >
-        {/* SVG */}
-        <Box
-          component={"img"}
-          src={circle}
-          sx={{
-            filter: "blur(5px)",
-            position: "absolute",
-            width: "106px",
-            top: "200px",
-            height: "96px",
-            left: "306px",
-          }}
-        ></Box>
-        <Box
-          component={"img"}
-          src={circle}
-          sx={{
-            filter: "blur(3px)",
-            position: "absolute",
-            width: "66px",
-            top: "240px",
-            height: "66px",
-            right: "186px",
-          }}
-        ></Box>
-        {/* /**Section 1 */}
-        <Stack rowGap={2} justifyContent={"center"} alignItems={"center"}>
-          <ListItemButton>
-            <ListItemIcon>
-              <PersonalVideoIcon />
-            </ListItemIcon>
-            <ListItemText>Bienvenue sur IMPATIA</ListItemText>
-          </ListItemButton>
-          {/* <ThemeToggle/> */}
-          <Typography variant="h4">
-            DETECTEUR D'EMOTION{" "}
-            <span style={{ color: theme.palette.primary.main }}>IA</span>
-          </Typography>
-          <Typography
-            fontWeight={"300"}
-            variant="body2"
-            width={"250px"}
-            textAlign={"center"}
-          >
-            Vos émotions sont précieuses. Écoutons-les ensemble.
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{ bgcolor: "#000" }}
-            endIcon={<ArrowForwardIosIcon />}
-          >
-            Explorer mes emotions{" "}
-          </Button>
-        </Stack>
-        {/* <ThemeToggle /> */}
-
-        {/* /**Section 2 */}
+        <HeroSection />
+        {/*-------------- Technologie Section ------------*/}
         <Stack
-          position={"relative"}
-          flexDirection={"row"}
-          width={"100%"}
-          alignItems={"center"}
+          flexDirection={"column"}
           justifyContent={"center"}
+          pt={10}
+          alignItems={"center"}
         >
-          {mdDown && (
-            <>
-              <SloganText
-                title={"Interactivité & Feedback"}
-                text={"Retours en temps réel adaptés à vos ressentis"}
-                left={87}
-                top={73}
-              />
-              <SloganText
-                title={"Interactivité & Feedback"}
-                text={"Retours en temps réel adaptés à vos ressentis"}
-                right={126}
-                top={78}
-              />
-              <SloganText
-                title={"Interactivité & Feedback"}
-                text={"Retours en temps réel adaptés à vos ressentis"}
-                right={83}
-                top={216}
-              />
-            </>
-          )}
-
-          <Box
-            // alignSelf={"start"}
-            // border={"1px solid black"}
-            src="./static/smile.png"
-            component={"img"}
-            minWidth={"400px"}
-          ></Box>
+          <Typography textTransform={"uppercase"} variant="h6">
+            <span style={{ color: theme.palette.primary.main }}>
+              {" "}
+              technologie{" "}
+            </span>{" "}
+            utilisés
+          </Typography>
+          <Stack
+            columnGap={10}
+            pt={5}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"row"}
+          >
+            {[python, figma, react].map((el) => (
+              <Box
+                component={"img"}
+                src={el}
+                width={"50px"}
+                height={"50px"}
+              ></Box>
+            ))}
+          </Stack>
         </Stack>
+        {/* ----------------------- */}
+        <Fontionnalite />
+        {/* --------------------- */}
+        <Step/> 
       </Container>
+
+      <Footer></Footer>
     </>
   );
 }
