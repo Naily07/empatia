@@ -26,9 +26,7 @@ const navItems = [
   { name: "Etapes", url: "/analyse" },
 ];
 
-function Header(props) {
-  // const { window } = props;
-  
+function Header() {  
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
