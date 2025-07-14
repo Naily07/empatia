@@ -14,38 +14,30 @@ import MyInputField from "./inputFiled";
 import { useRef, useState } from "react";
 import StyledSvg from "./svgConfig";
 import { useForm } from "react-hook-form";
-import { login } from "../../../api/account";
+import useAuth from "../../../hooks/useAuth";
+import { useAccountStore } from "../../../stores/accountStore";
+import { useNavigate } from "react-router-dom";
 
-export default function FormWithSelect({ fieldList, direction }) {
-  const {
-    register,
-    setValue,
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ mode: "onSubmit" });
+export default function FormWithSelect({
+  fieldList,
+  direction,
+  register,
+  setValue,
+  control,
+  handleSubmit,
+  onSubmit,
+  errors,
+}) {
   const [selectedValue, setSelectedValue] = useState("");
   const radioRef = useRef(null);
   const handleClick = (event, value) => {
     setSelectedValue(value);
-    setValue("radio", value);
+    setValue("roles", [value]);
     if (radioRef.current) {
       radioRef.current.focus();
     }
   };
-  const onSubmit = (data) => {
-    login(data)
-      .then((response) => {
-      // Traitement en cas de succès
-      console.log("Connexion réussie :", response);
-      // Rediriger ou afficher un message de succès ici
-      })
-      .catch((error) => {
-      // Traitement en cas d'erreur
-      console.error("Erreur de connexion :", error);
-      // Afficher un message d'erreur ici
-      });
-  };
+
   return (
     <Box sx={{ width: "70%" }}>
       <Stack
@@ -72,7 +64,7 @@ export default function FormWithSelect({ fieldList, direction }) {
               />
             }
             label="docteur"
-            value="docteur"
+            value="ROLE_DOCTEUR"
             handleClick={handleClick}
             selectedValue={selectedValue}
           />
@@ -86,14 +78,14 @@ export default function FormWithSelect({ fieldList, direction }) {
               />
             }
             label="Patient"
-            value="patient"
+            value="ROLE_USER"
             handleClick={handleClick}
             selectedValue={selectedValue}
           />
 
           <RadioGroup
             aria-labelledby="demo-radio"
-            name="radio"
+            name="roles"
             value={selectedValue}
           >
             <FormControlLabel
@@ -140,17 +132,13 @@ export default function FormWithSelect({ fieldList, direction }) {
               &nbsp;
               <Link to={"/auth/register"}>S&apos;inscrire</Link>
             </>
-          ):
-          <>
-              <Typography
-                color="primary"
-              >
-                vous avez un compte ?
-              </Typography>
+          ) : (
+            <>
+              <Typography color="primary">vous avez un compte ?</Typography>
               &nbsp;
               <Link to={"/auth/login"}>Se connecter </Link>
             </>
-          }
+          )}
 
           {/* <Typography></Typography> */}
         </Stack>

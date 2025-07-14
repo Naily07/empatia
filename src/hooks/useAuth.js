@@ -1,19 +1,20 @@
 /* eslint-disable no-useless-catch */
 import { useCallback } from "react";
-import { useAccountStore } from "../accountStore";
+import { useAccountStore } from "../stores/accountStore";
 import { Login } from "../api/account";
-import { useTokenStore } from "../tokenStore";
-
+import { useTokenStore } from "../stores/tokenStore";
 export default function useAuth() {
 	const { account, setAccount } = useAccountStore();
 	const { setAccessToken, setRefreshToken } = useTokenStore();
 	const login = useCallback(
-		async (username, password) => {
+		async ({email, password}) => {
 			try {
-				const res = await Login(username, password);
-				setAccessToken(res.data["access_token"]);
-				setRefreshToken(res.data["refresh_token"]);
-				setAccount(res.data["access_token"]);
+                console.log("ACCOUNT", email, password);
+				const res = await Login(email, password);
+                console.log("RESS", res);
+                
+				setAccessToken(res.data["token"]);
+				setAccount(res.data["token"]);
 				return res;
 			} catch (error) {
 				throw error;

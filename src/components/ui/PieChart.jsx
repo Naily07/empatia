@@ -36,7 +36,16 @@ export default function ChartUpdate({
 }) {
   const theme = useTheme();
   const mode = useThemeStore((state) => state.mode);
-
+  console.log("DATA", data);
+  const emotionColorMap = {
+    happy: "#B3D8EC",
+    sad: "#67ABD0",
+    angry: "#F8B4B4",
+    fear: "#D6BBFB",
+    surprised: "#FBD38D",
+    disgust: "#B2F5EA",
+    neutral: "#E2E8F0",
+  };
   const [chartState, setChartState] = useState(() => ({
     options: {
       chart: {
@@ -44,7 +53,7 @@ export default function ChartUpdate({
         type: "pie",
         background: bgColor,
       },
-      labels: data.map((el) => el.emotion),
+      labels: data.map((el) => el.name),
       legend: {
         show: legend,
         position: "bottom",
@@ -61,7 +70,7 @@ export default function ChartUpdate({
       theme: {
         mode: theme.palette.mode,
       },
-      colors: ["#B3D8EC", "#AEF6FA", "#67ABD0"],
+      colors: data.map((el) => emotionColorMap[el.name] || "#CCCCCC"),
       responsive: [
         {
           breakpoint: 480,
@@ -79,10 +88,20 @@ export default function ChartUpdate({
         },
       ],
     },
-    series: data.map((el) => el.value),
+    series: data.map((el) => el.intesite),
   }));
 
   useEffect(() => {
+    const emotionColorMap = {
+      happy: "#B3D8EC",
+      sad: "#67ABD0",
+      angry: "#F8B4B4",
+      fear: "#D6BBFB",
+      surprised: "#FBD38D",
+      disgust: "#B2F5EA",
+      neutral: "#E2E8F0",
+    };
+
     setChartState({
       options: {
         chart: {
@@ -90,7 +109,7 @@ export default function ChartUpdate({
           type: "pie",
           background: bgColor,
         },
-        labels: data.map((el) => el.emotion),
+        labels: data.map((el) => el.name),
         legend: {
           show: legend,
           position: "bottom",
@@ -107,7 +126,7 @@ export default function ChartUpdate({
         theme: {
           mode: theme.palette.mode,
         },
-        colors: ["#B3D8EC", "#AEF6FA", "#67ABD0"],
+        colors: data.map((el) => emotionColorMap[el.name] || "#CCCCCC"),
         responsive: [
           {
             breakpoint: 480,
@@ -125,7 +144,7 @@ export default function ChartUpdate({
           },
         ],
       },
-      series: data.map((el) => el.value),
+      series: data.map((el) => el.intesite),
     });
 
     console.log("MODE changé :", mode);

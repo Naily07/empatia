@@ -5,10 +5,27 @@ import circle from "../../../assets/circle.svg";
 import Header from "../../../components/header";
 import ChartUpdate from "../../../components/ui/PieChart";
 import SloganText from "../../home/components/sloganText";
+import { analyseResult } from "../../../api/analyse";
+import { useEffect, useState } from "react";
+import { useSessionAnalyseStorage } from "../../../stores/sessionAnalyseStorage";
 
 export default function Result() {
   const theme = useTheme();
-
+  const [result, setResult] = useState([])
+  const {session} = useSessionAnalyseStorage()
+  useEffect(() => {
+    if(session.length>0)
+     analyseResult(session)
+      .then((response) => {
+        console.log("RESPONSE", response);
+        setResult(response.data['emotions'].slice(0, 3))
+      })
+      .catch((error) => {
+        // Traitement en cas d'erreur
+        console.error("Erreur de connexion :", error);
+        // Afficher un message d'erreur ici
+      });
+  }, []);
   return (
     <>
       <Header />
@@ -20,7 +37,7 @@ export default function Result() {
         height="100svh"
         rowGap={0}
         zIndex={0}
-        bgcolor={'background.paper'}
+        bgcolor={"background.paper"}
       >
         <Box
           component={"img"}
@@ -84,15 +101,10 @@ export default function Result() {
         >
           <Stack>
             <ChartUpdate
-            width={350}
-            height={350}
-              data={[
-                { emotion: "Happy", value: 10 },
-                { emotion: "Happy", value: 10 },
-                { emotion: "Happy", value: 10 },
-              ]}
+              width={350}
+              height={350}
+              data={result}
             />
-            
           </Stack>
           <SloganText
             title={"Interactivité & Feedback"}

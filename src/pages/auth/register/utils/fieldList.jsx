@@ -4,7 +4,7 @@ import PersonIcon from "@mui/icons-material/Person";
 
 const fieldList = [
   {
-    name: "nom",
+    name: "name",
     label: "Nom",
     placeholder: "tapez votre nom",
     type: "text",
@@ -12,7 +12,7 @@ const fieldList = [
     icon: <PersonIcon />,
   },
   {
-    name: "prenom",
+    name: "firstname",
     label: "Prénom",
     placeholder: "tapez votre prénom",
     type: "text",
@@ -28,7 +28,7 @@ const fieldList = [
     icon: <EmailIcon />,
   },
   {
-    name: "password",
+    name: "plainPassword",
     label: "Mot de passe",
     placeholder: "entrer votre mot de passe",
     type: "password",

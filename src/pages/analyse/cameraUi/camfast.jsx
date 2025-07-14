@@ -3,8 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
-import { Button, CircularProgress, Stack } from "@mui/material";
+import { Button, CircularProgress, listClasses, Stack } from "@mui/material";
 import { VideoCameraBack } from "@mui/icons-material";
+import { CreateSession } from "../../../api/session";
+import { useSessionAnalyseStorage } from "../../../stores/sessionAnalyseStorage";
+import { getUserByEmail } from "../../../api/users";
+import { useAccountStore } from "../../../stores/accountStore";
+import { createEmotionUser } from "../../../api/emotion";
+import { analyseResultUpdate } from "../../../api/analyse";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const emotionsData = {
   0: "Hangry",
@@ -22,19 +29,22 @@ const WebcamDisplay = ({ setCamActive }) => {
   const canvasRef = useRef(null);
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [faces, setFaces] = useState([]);
   const [emotion, setEmotion] = useState("");
-  
+  const [emotionList, setEmotionList] = useState([]);
+  const { emotionAnalyses, session, setSessionAnalyse, setEmotionAnalyse } =
+    useSessionAnalyseStorage();
+  const { account } = useAccountStore();
+  const navigate = useNavigate();
   // Définir si l'image est en miroir ou non
   const isMirrored = true; // Changez à true si vous voulez l'effet miroir
-  
+
   const videoConstraints = {
     width: 1280,
     height: 720,
     facingMode: "user",
   };
 
-  // ⬇️ Chargement des modèles face-api.js
+  // Chargement des modèles face-api.js
   useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = "/models";
@@ -44,107 +54,118 @@ const WebcamDisplay = ({ setCamActive }) => {
     loadModels();
   }, []);
 
+  useEffect(() => {
+    if (isCameraOn) {
+      CreateSession()
+        .then((res) => {
+          console.log("response session", setSessionAnalyse(res.data["id"]));
+        })
+        .catch((err) => {
+          console.error("Erreur lors de la création de session :", err);
+          setCamActive(false);
+        });
+    }
+  }, [isCameraOn]);
   //  Détection en live avec rectangles
   useEffect(() => {
     let interval;
-    const detectFaces = async () => {
-      if (
-        webcamRef.current &&
-        webcamRef.current.video.readyState === 4 &&
-        faceapi.nets.tinyFaceDetector.params
-      ) {
-        const video = webcamRef.current.video;
-        const detections = await faceapi.detectAllFaces(
-          video,
-          new faceapi.TinyFaceDetectorOptions()
-        );
+    if (session.length > 0) {
+      const detectFaces = async () => {
+        if (
+          webcamRef.current &&
+          webcamRef.current.video.readyState === 4 &&
+          faceapi.nets.tinyFaceDetector.params
+        ) {
+          const video = webcamRef.current.video;
+          const detections = await faceapi.detectAllFaces(
+            video,
+            new faceapi.TinyFaceDetectorOptions()
+          );
 
-        const canvas = canvasRef.current;
-        const dims = {
-          width: video.videoWidth,
-          height: video.videoHeight,
-        };
-        faceapi.matchDimensions(canvas, dims);
+          const canvas = canvasRef.current;
+          const dims = {
+            width: video.videoWidth,
+            height: video.videoHeight,
+          };
+          faceapi.matchDimensions(canvas, dims);
 
-        let resizedDetections = faceapi.resizeResults(detections, dims);
-        
-        // Si l'image n'est pas en miroir, il faut ajuster les coordonnées
-        if (!isMirrored) {
-          resizedDetections = resizedDetections.map(detection => {
-            const box = detection.box;
-            // Inverser horizontalement les coordonnées
-            const adjustedBox = new faceapi.Box(
-              dims.width - box.x - box.width, // Nouvelle position X
-              box.y, // Y reste identique
-              box.width, // Largeur reste identique
-              box.height // Hauteur reste identique
-            );
-            return { ...detection, box: adjustedBox };
-          });
-        }
+          let resizedDetections = faceapi.resizeResults(detections, dims);
 
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Dessiner les rectangles de détection
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        
-        console.log("OK", resizedDetections.length, emotion);
-
-        if (resizedDetections.length > 0 && emotion) {
-          const box = resizedDetections[0].box;
-          const emotionText = emotion;
-          
-          // Définir la police avant de mesurer le texte
-          ctx.font = "16px Arial";
-          const textWidth = ctx.measureText(emotionText).width;
-          
-          // Sauvegarder le contexte avant transformation
-          ctx.save();
-          
-          if (isMirrored) {
-            // En mode miroir, le canvas est déjà inversé par le CSS
-            // Il faut contre-inverser le texte pour qu'il reste lisible
-            ctx.scale(-1, 1);
-            
-            // Dessiner le fond du texte (coordonnées inversées)
-            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-            ctx.fillRect(
-              -(box.x + textWidth + 10),
-              box.y - 25,
-              textWidth + 10,
-              22
-            );
-            
-            // Dessiner le texte de l'émotion (coordonnées inversées)
-            ctx.fillStyle = "white";
-            ctx.fillText(emotionText, -(box.x + textWidth + 5), box.y - 8);
-          } else {
-            // En mode normal, dessiner normalement
-            ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
-            ctx.fillRect(
-              box.x,
-              box.y - 25,
-              textWidth + 10,
-              22
-            );
-            
-            ctx.fillStyle = "white";
-            ctx.fillText(emotionText, box.x + 5, box.y - 8);
+          // Si l'image n'est pas en miroir, il faut ajuster les coordonnées
+          if (!isMirrored) {
+            resizedDetections = resizedDetections.map((detection) => {
+              const box = detection.box;
+              // Inverser horizontalement les coordonnées
+              const adjustedBox = new faceapi.Box(
+                dims.width - box.x - box.width, // Nouvelle position X
+                box.y, // Y reste identique
+                box.width, // Largeur reste identique
+                box.height // Hauteur reste identique
+              );
+              return { ...detection, box: adjustedBox };
+            });
           }
-          
-          // Restaurer le contexte
-          ctx.restore();
+
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          // Dessiner les rectangles de détection
+          faceapi.draw.drawDetections(canvas, resizedDetections);
+
+          console.log("OK", resizedDetections.length, emotion);
+
+          if (resizedDetections.length > 0 && emotion) {
+            const box = resizedDetections[0].box;
+            const emotionText = emotion;
+
+            // Définir la police avant de mesurer le texte
+            ctx.font = "16px Arial";
+            const textWidth = ctx.measureText(emotionText).width;
+
+            // Sauvegarder le contexte avant transformation
+            ctx.save();
+
+            if (isMirrored) {
+              // En mode miroir, le canvas est déjà inversé par le CSS
+              // Il faut contre-inverser le texte pour qu'il reste lisible
+              ctx.scale(-1, 1);
+
+              // Dessiner le fond du texte (coordonnées inversées)
+              ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+              ctx.fillRect(
+                -(box.x + textWidth + 10),
+                box.y - 25,
+                textWidth + 10,
+                22
+              );
+
+              // Dessiner le texte de l'émotion (coordonnées inversées)
+              ctx.fillStyle = "white";
+              ctx.fillText(emotionText, -(box.x + textWidth + 5), box.y - 8);
+            } else {
+              // En mode normal, dessiner normalement
+              ctx.fillStyle = "rgba(0, 0, 0, 0.7)";
+              ctx.fillRect(box.x, box.y - 25, textWidth + 10, 22);
+
+              ctx.fillStyle = "white";
+              ctx.fillText(emotionText, box.x + 5, box.y - 8);
+            }
+
+            // Restaurer le contexte
+            ctx.restore();
+          }
         }
+      };
+
+      if (isCameraOn && !loading) {
+        interval = setInterval(detectFaces, 300); // Détection toutes les 300ms
       }
-    };
 
-    if (isCameraOn && !loading) {
-      interval = setInterval(detectFaces, 300); // Détection toutes les 300ms
+      return () => clearInterval(interval);
+    } else {
+      setCamActive(false);
     }
-
-    return () => clearInterval(interval);
-  }, [isCameraOn, loading, emotion, isMirrored]);
+  }, [isCameraOn, loading, emotion, session]);
 
   // Capture automatique toutes les 500ms vers ton backend
   useEffect(() => {
@@ -164,6 +185,11 @@ const WebcamDisplay = ({ setCamActive }) => {
         });
         const data = await res.json();
         console.log("Emotion id :", data.class_id);
+        setEmotionList((prev) => [
+          ...prev,
+          { name: emotionsData[data.class_id], confidence: data.confidence },
+        ]);
+
         setEmotion(() => emotionsData[data.class_id] || "");
       } catch (err) {
         console.error("Erreur backend :", err);
@@ -181,6 +207,60 @@ const WebcamDisplay = ({ setCamActive }) => {
     const stream = webcamRef.current?.stream;
     if (stream) {
       stream.getTracks().forEach((track) => track.stop());
+    }
+    if (emotionList.length > 0) {
+      console.log("ListeEMO", emotionList);
+      // Supposons que emotionList est un tableau d'objets { name: string, confidence: number }
+
+      const emotionStats = emotionList.reduce((acc, emo) => {
+        if (!acc[emo.name]) {
+          acc[emo.name] = { count: 0, totalConfidence: 0 };
+        }
+        acc[emo.name].count += 1;
+        acc[emo.name].totalConfidence += emo.confidence;
+        return acc;
+      }, {});
+
+      // Calculer la moyenne des confidences par émotion
+      const emotionWithMeanConfidence = Object.entries(emotionStats)
+        .map(([emotion, stats]) => ({
+          emotion,
+          count: stats.count,
+          intesite: stats.totalConfidence / stats.count,
+        }))
+        .sort((a, b) => b.count - a.count) // trier par nombre d’occurrences décroissant
+        .slice(0, 3); // garder les 3 premiers
+
+      console.log(
+        "Top 3 émotions dominantes avec intensités moyennes :",
+        emotionWithMeanConfidence
+      );
+      setEmotionAnalyse(emotionWithMeanConfidence);
+      // getUserByEmail(account.username)
+      //   .then((res) => {
+      //     console.log("USER", res);
+      //   })
+      //   .catch((err) => console.log("eRR", err));
+      if (account) {
+        console.log("IS Account");
+        let emotionsiDS = [];
+        emotionAnalyses.forEach((el, i) => {
+          createEmotionUser(el)
+            .then((res) => emotionsiDS.push(res.data["@id"]))
+            .catch((err) => console.log("Err", err));
+        });
+        getUserByEmail(account.username)
+          .then((res) => {
+            const userId = res.data.member[0]["@id"];
+            analyseResultUpdate(session, userId, emotionsiDS)
+              .then((res) => {
+                setEmotionAnalyse([]);
+                navigate("/analyse/result");
+              })
+              .catch((err) => console.log("eRR", err));
+          })
+          .catch((err) => console.log("eRR", err));
+      }
     }
   };
 

@@ -7,10 +7,11 @@ export const useAccountStore = create(
       account: null,
       setAccount: (token) =>
         set(() => {
+          console.log("TOKENDecode",  jwtDecode(token));
           if (token !== null) {
             const username = jwtDecode(token)?.username;
-            const account_type = jwtDecode(token)?.account_type;
-            return { account: { username, account_type } };
+            const role = jwtDecode(token)?.roles?.[0] || "user";
+            return { account: { username, role} };
           }
           return { account: null };
         }),

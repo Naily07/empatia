@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import Logo from "../../../components/ui/logo";
 import Advice from "../components/advice";
-import FormWithSelect from "../components/From";
+import FormWithSelect from "../components/Form";
 import fieldList from "./utils/fieldList";
 import SvgPattern from "../assets/svgPattern";
 import CirclePatternBg from "../assets/circlePattern";
+import Loginform from "./loginForm";
 
 export default function Login() {
   const theme = useTheme();
@@ -36,12 +37,31 @@ export default function Login() {
           position={"relative"}
           overflow={"hidden"}
         >
-
           {/* PATTERN */}
-          <CirclePatternBg  top={"20%"} left={"80%"} size={"50px"} spacing="10px"  />
-          <CirclePatternBg top="60%" left={"10%"} size={"50px"} spacing="12px" />
-          <CirclePatternBg top="10%" left={"10%"} size={"50px"} backgroundColor=""/>
-          <CirclePatternBg top="90%" left={"90%"} size={"100px"} backgroundColor=""/>
+          <CirclePatternBg
+            top={"20%"}
+            left={"80%"}
+            size={"50px"}
+            spacing="10px"
+          />
+          <CirclePatternBg
+            top="60%"
+            left={"10%"}
+            size={"50px"}
+            spacing="12px"
+          />
+          <CirclePatternBg
+            top="10%"
+            left={"10%"}
+            size={"50px"}
+            backgroundColor=""
+          />
+          <CirclePatternBg
+            top="90%"
+            left={"90%"}
+            size={"100px"}
+            backgroundColor=""
+          />
           <Stack
             position={"absolute"}
             direction={"column"}
@@ -96,7 +116,7 @@ export default function Login() {
 
           <Box sx={{ width: "100%" }}>
             {/* <FormTabs /> */}
-            <FormWithSelect fieldList={fieldList} direction={"column"} />
+            <Loginform  fieldList={fieldList} direction={"column"} />
           </Box>
         </Stack>
       </Stack>

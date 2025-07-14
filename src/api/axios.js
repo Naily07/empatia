@@ -5,7 +5,10 @@ const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL;
 import { useTokenStore } from "../stores/tokenStore";
 export const myAxios = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: false,
+//   withCredentials: false,
+  headers: {
+    "Content-Type": "application/ld+json", // ✅ Accepte par API Platform
+  },
 });
 
 export const myAxiosPrivate = axios.create({
@@ -13,7 +16,6 @@ export const myAxiosPrivate = axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "x-api-key": "reqres-free-v1"
   },
 });
 

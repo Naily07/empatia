@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import Logo from "../../../components/ui/logo";
 import Advice from "../components/advice";
-import FormWithSelect from "../components/From";
+import FormWithSelect from "../components/Form";
 import fieldList from "./utils/fieldList";
 import CirclePatternBox from "../assets/circlePattern";
 import SvgPattern from "../assets/svgPattern";
+import RegisterForm from "./registerForm";
 export default function Register() {
   const theme = useTheme();
   return (
@@ -35,7 +36,7 @@ export default function Register() {
           sx={{
             background: `linear-gradient(to bottom, rgba(18, 178, 193, 0.7),rgba(13, 138, 158))`,
           }}
-        zIndex={2}
+          zIndex={2}
           position={"relative"}
           overflow={"hidden"}
         >
@@ -116,7 +117,7 @@ export default function Register() {
 
           <Box sx={{ width: "100%" }}>
             {/* <FormTabs /> */}
-            <FormWithSelect fieldList={fieldList} direction={"row"} />
+            <RegisterForm fieldList={fieldList} direction={"column"} />
           </Box>
         </Stack>
       </Stack>
