@@ -1,9 +1,9 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 
-export default function SloganText({ title, text, left, right, top }) {
+export default function SloganText({ title, text, left, right, top, position }) {
   return (
     <Box
-      position="absolute"
+      position={position ? position :"absolute" }
       sx={{
         left,
         right,
@@ -23,7 +23,7 @@ export default function SloganText({ title, text, left, right, top }) {
           >
             {title}
           </Typography>
-          <Typography variant="body2">{text}</Typography>
+          <Typography variant="body2" fontWeight={300}>{text}</Typography>
         </Stack>
       </Stack>
     </Box>

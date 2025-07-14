@@ -14,6 +14,7 @@ import liveDetect from "../../../assets/liveDetect.png";
 import conseil from "../../../assets/conseil.png";
 import media1 from "../../../assets/media1.png";
 import IconButtonCustom from "../../../components/ui/iconButton";
+import circle from "../../../assets/circle.svg";
 
 export default function Fontionnalite() {
   const theme = useTheme();
@@ -36,14 +37,50 @@ export default function Fontionnalite() {
   ];
   return (
     <>
-      <Stack justifyContent={"center"} alignItems={"center"} pt={10} rowGap={2}>
+      <Stack
+        justifyContent={"center"}
+        alignItems={"center"}
+        pt={10}
+        rowGap={0}
+        zIndex={0}
+        position={"relative"}
+      >
+        <Box
+          component={"img"}
+          src={circle}
+          sx={{
+            filter: "blur(5px)",
+            zIndex: -1,
+            position: "absolute",
+            width: "106px",
+            top: "10%",
+            height: "196px",
+            right: "15%",
+          }}
+        ></Box>
+        <Box
+          component={"img"}
+          src={circle}
+          sx={{
+            filter: "blur(5px)",
+            zIndex: -1,
+            position: "absolute",
+            width: "75px",
+            top: "25%",
+            height: "196px",
+            left: "10%",
+          }}
+        ></Box>
         <Stack justifyContent={"center"} alignItems={"center"}>
-          <IconButtonCustom startIcon={<ListAltSharp />} text={"Fonctionnalité"} />
+          <IconButtonCustom
+            startIcon={<ListAltSharp />}
+            text={"Fonctionnalité"}
+          />
           <Stack
-            mt={2}
+            mt={5}
             justifyContent={"center"}
             alignItems={"center"}
-            rowGap={1}
+            rowGap={2}
           >
             <Typography variant="h3" fontWeight={"400"}>
               Vos émotions, notre{" "}

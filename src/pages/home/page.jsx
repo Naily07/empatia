@@ -62,8 +62,8 @@ export default function Home() {
               <Box
                 component={"img"}
                 src={el}
-                width={"50px"}
-                height={"50px"}
+                width={"90px"}
+                height={"90px"}
               ></Box>
             ))}
           </Stack>

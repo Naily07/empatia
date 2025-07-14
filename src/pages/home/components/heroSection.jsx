@@ -13,7 +13,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import PersonalVideoIcon from "@mui/icons-material/PersonalVideo";
 import circle from "../../../assets/circle.svg";
 import SloganText from "./sloganText";
-import ThemedButton from "../../../components/ThemeBtn";
+import ThemedButton from "../../../components/ui/ThemeBtn";
 import IconButtonCustom from "../../../components/ui/iconButton";
 
 export default function HeroSection() {

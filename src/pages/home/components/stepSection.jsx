@@ -50,7 +50,7 @@ export default function Step() {
         <Stack justifyContent={"center"} alignItems={"center"}>
           <IconButtonCustom startIcon={<LightbulbOutlineSharp />} text={"comment ça marche"} />
           <Stack
-            mt={2}
+            mt={5}
             justifyContent={"center"}
             alignItems={"center"}
             rowGap={1}
@@ -69,7 +69,7 @@ export default function Step() {
             </Typography>
           </Stack>
         </Stack>
-        <Stack flexDirection={"row"} columnGap={5}>
+        <Stack flexDirection={"row"} columnGap={5}  mt={2}>
           {/* Englobe Elements */}
           <Stack
             direction={smDown ? "column" : "row"}

@@ -1,16 +1,32 @@
 // theme/theme.ts
 import { createTheme } from "@mui/material/styles";
-
+import "@fontsource/alegreya";
 export const getTheme = (mode) =>
   createTheme({
+    components: {
+      MuiDrawer: {
+        styleOverrides: {
+          paper: {
+            backgroundColor: mode === "light" ? "#FFF" : "#121212",
+            color: mode === "light" ? "#000" : "#fff",
+            width: 250,
+          },
+        },
+      },
+    },
     palette: {
       mode,
       ...(mode === "light"
         ? {
-            primary: { main: "#12B2C1", light: "#0c7c87", dark: "#41c1cd", contrastText: '#fff' },
+            primary: {
+              main: "#12B2C1",
+              light: "#0c7c87",
+              dark: "#41c1cd",
+              contrastText: "#fff",
+            },
             secondary: { main: "#E5F9F8", light: "#a0aead", dark: "#eafaf9" },
             background: {
-              default: "#F7FFFF",
+              default: "#FFFFFF",
               paper: "#E5F9F8",
             },
             text: {
@@ -20,9 +36,9 @@ export const getTheme = (mode) =>
           }
         : {
             primary: {
-              main: "#12B2C1", 
-              light: "#63ccff", 
-              dark: "#0a7a8c", 
+              main: "#12B2C1",
+              light: "#63ccff",
+              dark: "#0a7a8c",
               contrastText: "#ffffff",
             },
             secondary: {
@@ -92,24 +108,25 @@ export const getTheme = (mode) =>
         },
       },
       body1: {
-        fontSize: '16px',
-        lineHeight: '24px', // Bonne lisibilité pour les paragraphes
-        '@media (max-width:600px)': {
-          fontSize: '14px',
-          lineHeight: '20px',
+        fontSize: "16px",
+        lineHeight: "24px", // Bonne lisibilité pour les paragraphes
+        "@media (max-width:600px)": {
+          fontSize: "14px",
+          lineHeight: "20px",
         },
       },
       body2: {
-        fontSize: '14px',
-        lineHeight: '20px',
-        '@media (max-width:600px)': {
-          fontSize: '12px',
-          lineHeight: '18px',
+        fontFamily: "alergrya, Roboto, sans-serif",
+        fontSize: "14px",
+        lineHeight: "20px",
+        "@media (max-width:600px)": {
+          fontSize: "12px",
+          lineHeight: "18px",
         },
       },
       caption: {
-        fontSize: '12px',
-        lineHeight: '16px',
+        fontSize: "12px",
+        lineHeight: "16px",
       },
     },
     shape: {

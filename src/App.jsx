@@ -7,9 +7,7 @@ import {
   Button,
 } from "@mui/material";
 import { useThemeStore } from "./stores/themeStore";
-import { getTheme } from "./theme/themeContext";
-import ThemeToggle from "./components/btnThemeToogle";
-import Header from "./components/header";
+import { getTheme } from "./theme/themeContext"
 import MainLayout from "./Layout";
 import Router from "./Layout";
 

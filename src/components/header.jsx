@@ -15,15 +15,21 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
-import ThemeToggle from "./btnThemeToogle";
+import ThemeToggle from "./ui/BtnThemeToogle";
+import { useNavigate } from "react-router-dom";
+import Logo from "./ui/logo";
 
 const drawerWidth = 240;
-const navItems = ["Accueil", "Fonctionnalité", "Etapes"];
+const navItems = [
+  { name: "Accueil", url: "/" },
+  { name: "Fonctionnalité", url: "/" },
+  { name: "Etapes", url: "/analyse" },
+];
 
 function Header(props) {
-  const { window } = props;
+  // const { window } = props;
+  
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -37,19 +43,20 @@ function Header(props) {
       ></Box>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+        {navItems.map((item, i) => (
+          <ListItem key={i} disablePadding>
             <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Box>
   );
+  const navigate = useNavigate();
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  // const container =
+  //   window !== undefined ? () => window().document.body : undefined;
 
   return (
     // <Toolbar>
@@ -69,12 +76,7 @@ function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Box
-            component={"img"}
-            sx={{ width: "15%", display: { xs: "none", md: "block" } }}
-            src="/static/logo.png"
-          ></Box>
-
+          <Logo />
           <Stack
             direction={"row"}
             columnGap={{ xs: 2, md: 5 }}
@@ -87,19 +89,26 @@ function Header(props) {
               overflow: "hidden",
             }}
           >
-            {navItems.map((item) => (
-              <Button key={item} sx={{ color: "text.primary" }}>
-                {item}
+            {navItems.map((item, i) => (
+              <Button
+                key={i}
+                onClick={() => navigate(item.url)}
+                sx={{ color: "text.primary" }}
+              >
+                {item.name}
               </Button>
             ))}
           </Stack>
           <ThemeToggle />
-          <Button variant="contained"> Commencez l'analyse</Button>
+          <Button variant="contained" onClick={() => navigate(window.location.pathname === '/' ? "/analyse" : "/auth/login")}>
+            {window.location.pathname ==="/"  ? `Commencez l'analyse`
+              : "Se connecter"}
+          </Button>
         </Toolbar>
       </AppBar>
       <nav>
         <Drawer
-          container={container}
+          // container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -122,12 +131,12 @@ function Header(props) {
   );
 }
 
-Header.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
+// Header.propTypes = {
+//   /**
+//    * Injected by the documentation to work in an iframe.
+//    * You won't need it on your project.
+//    */
+//   window: PropTypes.func,
+// };
 
 export default Header;
