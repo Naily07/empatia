@@ -1,9 +1,9 @@
 // src/components/WebcamDisplay.jsx
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Webcam from "react-webcam";
 import * as faceapi from "face-api.js";
-import { Button, CircularProgress, listClasses, Stack } from "@mui/material";
+import { Button, CircularProgress, Stack } from "@mui/material";
 import { VideoCameraBack } from "@mui/icons-material";
 import { CreateSession } from "../../../api/session";
 import { useSessionAnalyseStorage } from "../../../stores/sessionAnalyseStorage";
@@ -11,10 +11,10 @@ import { getUserByEmail } from "../../../api/users";
 import { useAccountStore } from "../../../stores/accountStore";
 import { createEmotionUser } from "../../../api/emotion";
 import { analyseResultUpdate } from "../../../api/analyse";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const emotionsData = {
-  0: "Hangry",
+  0: "angry",
   1: "disgust",
   2: "fear",
   3: "happy",
@@ -179,7 +179,7 @@ const WebcamDisplay = ({ setCamActive }) => {
       formData.append("file", blob, "capture.jpg");
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/predict", {
+        const res = await fetch("http://192.168.137.1:8000/predict", {
           method: "POST",
           body: formData,
         });
@@ -244,17 +244,21 @@ const WebcamDisplay = ({ setCamActive }) => {
       if (account) {
         console.log("IS Account");
         let emotionsiDS = [];
-        emotionAnalyses.forEach((el, i) => {
+        console.log('emotionAnalaeiurwqo', emotionAnalyses)
+        emotionWithMeanConfidence.forEach((el) => {
           createEmotionUser(el)
-            .then((res) => emotionsiDS.push(res.data["@id"]))
+            .then((res) => {
+              console.log('test', emotionsiDS.push(res.data["@id"]))
+            })
             .catch((err) => console.log("Err", err));
         });
+        console.log('emotionids', emotionsiDS)
         getUserByEmail(account.username)
           .then((res) => {
             const userId = res.data.member[0]["@id"];
             analyseResultUpdate(session, userId, emotionsiDS)
               .then((res) => {
-                setEmotionAnalyse([]);
+                // setEmotionAnalyse([]);
                 navigate("/analyse/result");
               })
               .catch((err) => console.log("eRR", err));

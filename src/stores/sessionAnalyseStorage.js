@@ -1,11 +1,11 @@
-import { persist } from "zustand/middleware";
-import { create } from "zustand";
+import { persist } from 'zustand/middleware';
+import { create } from 'zustand';
 
 export const useSessionAnalyseStorage = create(
   persist(
     (set) => ({
-      session: "",
-      emotionAnalyses: [],
+      session: '',
+      emotionAnalyses: null,
       setSessionAnalyse: (session) =>
         set(() => ({
           session: session !== null ? session : null,
@@ -16,7 +16,7 @@ export const useSessionAnalyseStorage = create(
         })),
     }),
     {
-      name: "session-analyse",
+      name: 'session-analyse',
     }
   )
 );
