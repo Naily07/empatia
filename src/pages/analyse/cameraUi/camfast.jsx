@@ -245,7 +245,7 @@ const WebcamDisplay = ({ setCamActive }) => {
         console.log("IS Account");
         let emotionsiDS = [];
         console.log('emotionAnalaeiurwqo', emotionAnalyses)
-        emotionAnalyses.forEach((el) => {
+        emotionWithMeanConfidence.forEach((el) => {
           createEmotionUser(el)
             .then((res) => {
               console.log('test', emotionsiDS.push(res.data["@id"]))
