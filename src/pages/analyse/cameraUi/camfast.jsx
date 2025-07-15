@@ -14,7 +14,7 @@ import { analyseResultUpdate } from "../../../api/analyse";
 import { useNavigate, useNavigation } from "react-router-dom";
 
 const emotionsData = {
-  0: "Hangry",
+  0: "angry",
   1: "disgust",
   2: "fear",
   3: "happy",

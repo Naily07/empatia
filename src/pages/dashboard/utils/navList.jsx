@@ -16,7 +16,7 @@ const navLists = [
   {
     label: "Calendrier",
     route: "/calendar",
-    active: true,
+    active: false,
     iconActive: <CalendarMonthOutlinedIcon color="primary" />,
     iconNotActive: <CalendarMonthOutlinedIcon />,
     nav: "principal",

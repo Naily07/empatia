@@ -29,3 +29,4 @@ export async function analyseResultUpdate(sessionId, userId, emotions) {
     throw error.response ? error.response.data : error;
   }
 }
+

@@ -12,7 +12,7 @@ export const useSessionAnalyseStorage = create(
         })),
       setEmotionAnalyse: (emotion) =>
         set(() => ({
-          emotionAnalyses: Array.isArray(emotion) ? emotion : [],
+          emotionAnalyses: emotion  || [] ,
         })),
     }),
     {

@@ -9,3 +9,12 @@ export async function getUserByEmail(username) {
     throw error.response ? error.response.data : error;
   }
 }
+
+export async function getUserByRole(role) {
+  try {
+    const response = await myAxios.get(`/users?roles=${role}`);
+    return response;
+  } catch (error) {
+    throw error.response ? error.response.data : error;
+  }
+}

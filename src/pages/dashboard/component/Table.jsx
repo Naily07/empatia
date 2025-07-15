@@ -136,6 +136,7 @@ export default function TableUser() {
   }, [filteredRows]);
   return (
     <Paper
+      elevation={1}
       sx={{
         display: "flex",
         gap: 2,
@@ -269,7 +270,6 @@ export default function TableUser() {
                                     fontSize: "0.7rem",
                                   },
                                 }}
-                                
                                 primary={value.name}
                                 secondary={`${value.genre}, ${value.age} ans`}
                                 sx={{ ml: 1 }}

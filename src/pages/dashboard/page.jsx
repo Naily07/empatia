@@ -27,11 +27,12 @@ export default function Dashboard() {
           }}
         >
           <Toolbar />
-          <Stack width={"100%"} direction={"row"} gap={2} flexWrap={"wrap"}>
+          <Stack width={"100%"} direction={"row"} gap={3} flexWrap={"wrap"}>
             <TableUser />
             {/* STATISTIQUE */}
             <Paper
               gap={2}
+              elevation={1}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -67,8 +68,8 @@ export default function Dashboard() {
               >
                 <ChartUpdate
                   data={[
-                    { emotion: "Happy", value: 10 },
-                    { emotion: "Happy", value: 10 },
+                    { name: "Happy", intesite: 10 },
+                    { name: "Happy", intesite: 10 },
                   ]}
                   legend={false}
                   height={200}

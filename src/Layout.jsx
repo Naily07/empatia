@@ -6,6 +6,7 @@ import Dashboard from "./pages/dashboard/page";
 import Login from "./pages/auth/login/page";
 import Register from "./pages/auth/register/page";
 import ProtectedRoute from "./protectedRoute";
+import ProfessionnalAdvice from "./pages/analyse/professionnalAdvice/page";
 
 export default function Router() {
   return (
@@ -18,6 +19,9 @@ export default function Router() {
           {" "}
         </Route>
         <Route path="/analyse/result" element={<Result />}>
+          {" "}
+        </Route>
+        <Route path="/analyse/professionnalAdvice" element={<ProfessionnalAdvice />}>
           {" "}
         </Route>
         <Route
