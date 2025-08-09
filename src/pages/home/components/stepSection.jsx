@@ -16,7 +16,7 @@ import { steps } from "../utils/steps";
 import IconButtonCustom from "../../../components/ui/iconButton";
 import { LightbulbOutlineSharp } from "@mui/icons-material";
 export default function Step() {
-  const theme = useTheme()
+  const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   const leftSteps = steps.reduce((acc, step, index) => {
     if (index % 2 === 0) {
@@ -27,6 +27,8 @@ export default function Step() {
         step: steps[index + 1]?.step || null,
       });
     }
+    console.log("ACC", acc);
+
     return acc;
   }, []);
 
@@ -48,7 +50,10 @@ export default function Step() {
     <>
       <Stack justifyContent={"center"} alignItems={"center"} py={10} rowGap={5}>
         <Stack justifyContent={"center"} alignItems={"center"}>
-          <IconButtonCustom startIcon={<LightbulbOutlineSharp />} text={"comment ça marche"} />
+          <IconButtonCustom
+            startIcon={<LightbulbOutlineSharp />}
+            text={"comment ça marche"}
+          />
           <Stack
             mt={5}
             justifyContent={"center"}
@@ -69,7 +74,7 @@ export default function Step() {
             </Typography>
           </Stack>
         </Stack>
-        <Stack flexDirection={"row"} columnGap={5}  mt={2}>
+        <Stack flexDirection={"row"} columnGap={5} mt={2}>
           {/* Englobe Elements */}
           <Stack
             direction={smDown ? "column" : "row"}
@@ -86,27 +91,31 @@ export default function Step() {
                     <ScrollSlideIn x={-100} delay={i * 0.3}>
                       <Box
                         component="img"
-                        src={step.icon}
+                        src={
+                          theme.palette.mode === "light"
+                            ? step.icon.light
+                            : step.icon.dark
+                        }
                         width={"150px"}
                         height="150px"
                       />
                     </ScrollSlideIn>
                     <ScrollSlideIn x={100} delay={i * 0.3 + 0.15}>
-                        <Stack
-                          flexDirection="column"
-                          alignItems="flex-end"
-                          maxWidth="240px"
-                          rowGap={1}
-                        >
-                          <CircleBox>{step.step}</CircleBox>
-                          <Typography variant="h6" fontWeight="800">
-                            {step.title}
-                          </Typography>
-                          <Typography variant="caption" textAlign="end">
-                            {step.text}
-                          </Typography>
-                        </Stack>
-                      </ScrollSlideIn>
+                      <Stack
+                        flexDirection="column"
+                        alignItems="flex-end"
+                        maxWidth="240px"
+                        rowGap={1}
+                      >
+                        <CircleBox>{step.step}</CircleBox>
+                        <Typography variant="h6" fontWeight="800">
+                          {step.title}
+                        </Typography>
+                        <Typography variant="caption" textAlign="end">
+                          {step.text}
+                        </Typography>
+                      </Stack>
+                    </ScrollSlideIn>
                   </Box>
                 );
               })}
@@ -120,7 +129,12 @@ export default function Step() {
                       <ScrollSlideIn x={-100} delay={i * 0.3}>
                         <Box
                           component="img"
-                          src={step.icon}
+                          src={
+                            theme.palette.mode === "light"
+                              ? step.icon.light
+                              : step.icon.dark
+                          }
+                          // bgcolor={'#fff'}
                           width={"150px"}
                           height="150px"
                         />
@@ -179,7 +193,12 @@ export default function Step() {
                       <ScrollSlideIn x={100} delay={i * 0.3 + 0.15}>
                         <Box
                           component="img"
-                          src={step.icon}
+                          src={
+                            theme.palette.mode === "light"
+                              ? step.icon.light
+                              : step.icon.dark
+                          }
+                          bgcolor={theme.palette.background}
                           width="150px"
                           height="150px"
                           alignSelf="flex-start"

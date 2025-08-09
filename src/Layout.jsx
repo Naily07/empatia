@@ -10,7 +10,7 @@ import ProfessionnalAdvice from "./pages/analyse/professionnalAdvice/page";
 
 export default function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/empatia">
       <Routes>
         <Route path="/" element={<Home />}>
           {" "}
@@ -27,9 +27,9 @@ export default function Router() {
         <Route
           path="/user/dashboard"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <Dashboard />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           }
         >
           {" "}

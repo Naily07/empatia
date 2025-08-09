@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import { useAccountStore } from "../../../stores/accountStore";
 import { useNavigate } from "react-router-dom";
 import { Register } from "../../../api/account";
+import { useTheme } from "@mui/material";
 
 export default function RegisterForm() {
   const {
@@ -15,12 +16,10 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm({ mode: "onSubmit" });
   const navigate = useNavigate();
-
   const { login } = useAuth();
   const { account } = useAccountStore();
   const onSubmit = (data) => {
-    console.log("rEgister", data);
-    
+   
     Register(data)
       .then((response) => {
         if (account.role === "ROLE_ADMIN") {

@@ -30,6 +30,7 @@ export default function FormWithSelect({
 }) {
   const [selectedValue, setSelectedValue] = useState("");
   const radioRef = useRef(null);
+  const theme = useTheme();
   const handleClick = (event, value) => {
     setSelectedValue(value);
     setValue("roles", [value]);
@@ -37,7 +38,7 @@ export default function FormWithSelect({
       radioRef.current.focus();
     }
   };
-
+  
   return (
     <Box sx={{ width: "70%" }}>
       <Stack
@@ -53,13 +54,13 @@ export default function FormWithSelect({
           borderRadius={2}
           minWidth={100}
           columnGap={4}
-          bgcolor={"rgba(255, 255, 255, 0.26)"}
+          bgcolor={"background.paper"}
         >
           <StyledSvg
             direction={direction || null}
             svgPath={
               <path
-                fill="currentColor"
+                fill={theme.palette.mode === "light" ? "" : "#fff"}
                 d="M14.84 16.26C17.86 16.83 20 18.29 20 20v2H4v-2c0-1.71 2.14-3.17 5.16-3.74L12 21zM8 8h8v2a4 4 0 0 1-4 4a4 4 0 0 1-4-4zm0-1l.41-4.1a1 1 0 0 1 1-.9h5.19c.51 0 .94.39.99.9L16 7zm4-4h-1v1h-1v1h1v1h1V5h1V4h-1z"
               />
             }
@@ -73,7 +74,7 @@ export default function FormWithSelect({
             direction={direction || null}
             svgPath={
               <path
-                fill="currentColor"
+                fill={theme.palette.mode === "light" ? "" : "#fff"}
                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
               />
             }
@@ -109,7 +110,9 @@ export default function FormWithSelect({
               required={el.required}
               placeholder={el.placeholder}
             >
-              {el.icon}
+              {theme.palette.mode === "light"
+                ? el.lightIcon
+                : el.darkIcon}
             </MyInputField>
           ))}
 

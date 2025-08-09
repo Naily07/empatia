@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Box, InputAdornment, InputLabel, TextField } from "@mui/material";
+import { Box, InputAdornment, InputLabel, TextField, useTheme } from "@mui/material";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
@@ -14,6 +14,7 @@ export default function MyInputField({
   setValue,
   type,
 }) {
+  const theme = useTheme()
   const rules = {
     required: required && `${label} est requis`,
     ...(type === "email"
@@ -72,7 +73,7 @@ export default function MyInputField({
                         name.toLowerCase() === "password" ? "pointer" : "none",
                     }}
                   >
-                    {showPassword ? <VisibilityOff /> : children}
+                    {showPassword ? <VisibilityOff sx={{ color:theme.palette.mode==='light'?'#fff':''}}  /> : children}
                   </InputAdornment>
                 ),
               },

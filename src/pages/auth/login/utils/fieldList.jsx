@@ -1,4 +1,4 @@
-import { Visibility } from "@mui/icons-material";
+import { Light, Visibility } from "@mui/icons-material";
 import EmailIcon from "@mui/icons-material/Email";
 
 const fieldList = [
@@ -8,7 +8,9 @@ const fieldList = [
     placeholder: "tapez votre email",
     type: "email",
     required: "Ce champs est requis",
-    icon: <EmailIcon />,
+    darkIcon: <EmailIcon sx={{ color: "#000000ff"}}/>,
+    lightIcon: <EmailIcon />,
+    
   },
   {
     name: "password",
@@ -16,7 +18,8 @@ const fieldList = [
     placeholder: "entrer votre mot de passe",
     type: "password",
     required: "Ce champs est requis",
-    icon: <Visibility />,
+    darkIcon: <Visibility sx={{ color: "#000000ff"}} />,
+    lightIcon: <Visibility />,
   },
 ];
 export default fieldList

@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Stack } from "@mui/material";
 import ThemeToggle from "./ui/BtnThemeToogle";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./ui/logo";
 
 const drawerWidth = 240;
@@ -26,7 +26,7 @@ const navItems = [
   { name: "Etapes", url: "/analyse" },
 ];
 
-function Header() {  
+function Header() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -34,11 +34,15 @@ function Header() {
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Box
-        component={"img"}
-        sx={{ width: "100px" }}
-        src="/static/logo.png"
-      ></Box>
+      <Box sx={{ width: "100px", display: { md: "block" } }}>
+        <Link to="/">
+          <img
+            src="/static/logo.png"
+            alt="logo"
+            style={{ width: "100%", display: "block" }}
+          />
+        </Link>
+      </Box>
       <Divider />
       <List>
         {navItems.map((item, i) => (
@@ -98,8 +102,16 @@ function Header() {
             ))}
           </Stack>
           <ThemeToggle />
-          <Button variant="contained" onClick={() => navigate(window.location.pathname === '/' ? "/analyse" : "/auth/login")}>
-            {window.location.pathname ==="/"  ? `Commencez l'analyse`
+          <Button
+            variant="contained"
+            onClick={() =>
+              navigate(
+                window.location.pathname === "/" ? "/analyse" : "/auth/login"
+              )
+            }
+          >
+            {window.location.pathname === "/"
+              ? `Commencez l'analyse`
               : "Se connecter"}
           </Button>
         </Toolbar>

@@ -1,11 +1,15 @@
 import { Box } from "@mui/material";
-
-export default function Logo({width = "10%"}) {
+import { Link } from "react-router-dom";
+export default function Logo({ width = "10%" }) {
   return (
-    <Box
-      component={"img"}
-      sx={{ width: width, display: { xs: "none", md: "block" } }}
-      src="/static/logo.png"
-    ></Box>
+    <Box sx={{ width: width, display: { xs: "none", md: "block" } }}>
+      <Link to="/">
+        <img
+          src="/static/logo.png"
+          alt="logo"
+          style={{ width: "100%", display: "block" }}
+        />
+      </Link>
+    </Box>
   );
 }
